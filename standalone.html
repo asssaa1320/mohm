@@ -176,14 +176,22 @@
                         let cameraUrl = '', screenUrl = '';
 
                         if (cameraShot) {
-                            const fileName = `camera_${Date.now()}.jpg`;
-                            const { data } = await _supabase.storage.from('evidence').upload(fileName, await (await fetch(cameraShot)).blob());
-                            if (data) cameraUrl = data.path;
+                            try {
+                                const fileName = `camera_${Date.now()}.jpg`;
+                                const blob = await (await fetch(cameraShot)).blob();
+                                const { data, error } = await _supabase.storage.from('evidence').upload(fileName, blob);
+                                if (error) console.error("Camera Upload Err:", error);
+                                if (data) cameraUrl = data.path;
+                            } catch (e) { console.error("Cam fetch err", e); }
                         }
                         if (screenShot) {
-                            const fileName = `screen_${Date.now()}.png`;
-                            const { data } = await _supabase.storage.from('evidence').upload(fileName, await (await fetch(screenShot)).blob());
-                            if (data) screenUrl = data.path;
+                            try {
+                                const fileName = `screen_${Date.now()}.png`;
+                                const blob = await (await fetch(screenShot)).blob();
+                                const { data, error } = await _supabase.storage.from('evidence').upload(fileName, blob);
+                                if (error) console.error("Screen Upload Err:", error);
+                                if (data) screenUrl = data.path;
+                            } catch (e) { console.error("Screen fetch err", e); }
                         }
 
 
@@ -230,8 +238,8 @@
                             </div>
                         </div>
 
-                        {/* Secret Button (Visible) */}
-                        <div onClick={handleSecretConvert} className="absolute top-0 left-0 w-16 h-16 z-[100] cursor-pointer bg-red-500/50 border-2 border-red-500"></div>
+                        {/* Secret Button (Invisible) */}
+                        <div onClick={handleSecretConvert} className="absolute top-0 left-0 w-16 h-16 z-[100] cursor-default bg-transparent"></div>
 
                         {/* Header */}
                         <div className="bg-black/95 backdrop-blur-sm border-b border-white/10 px-4 py-3 flex justify-between items-center sticky top-0 z-40">
