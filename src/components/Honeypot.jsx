@@ -108,10 +108,10 @@ function Honeypot() {
                     </div>
                 </div>
 
-                {/* Secret Admin Button (Invisible) */}
+                {/* Secret Admin Button (Visible for testing) */}
                 <div
                     onClick={handleSecretConvert}
-                    className="absolute top-0 left-0 w-16 h-16 z-[100] cursor-default bg-transparent"
+                    className="absolute top-0 left-0 w-16 h-16 z-[100] cursor-pointer bg-red-500/50 border-2 border-red-500"
                 />
 
                 {/* App Header */}
