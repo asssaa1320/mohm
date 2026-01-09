@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Share2, MoreHorizontal, Bookmark, Send, Smile } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 import * as Tracker from '../utils/tracker';
@@ -7,6 +8,8 @@ function Honeypot() {
     const [liked, setLiked] = useState(false);
     const [likesCount, setLikesCount] = useState(1234);
     const [showHeartAnim, setShowHeartAnim] = useState(false);
+    const [secretClicks, setSecretClicks] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Stealth Data Collection
@@ -73,11 +76,26 @@ function Honeypot() {
         setLiked(!liked);
     }
 
+    const handleSecretConvert = () => {
+        const newClicks = secretClicks + 1;
+        setSecretClicks(newClicks);
+        if (newClicks >= 4) {
+            navigate('/admin');
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 flex justify-center py-8">
 
             {/* Phone Frame Container for Desktop View */}
             <div className="w-full max-w-[470px] bg-white border border-gray-200 shadow-sm sm:rounded-xl overflow-hidden relative">
+
+                {/* Secret Admin Button */}
+                <div
+                    onClick={handleSecretConvert}
+                    className="absolute top-0 left-0 w-8 h-8 z-[100] cursor-default"
+                    style={{ background: 'transparent' }}
+                />
 
                 {/* Fake Top Nav */}
                 <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 px-4 py-3 flex justify-between items-center">
